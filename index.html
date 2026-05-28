@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<!-- ============ EDIT: page title (browser tab) ============ -->
+<title>Rajarshi Chowdhury — Database Kernel Architect</title>
+<meta name="description" content="Rajarshi Chowdhury — Database Kernel Architect at Oracle. Database kernel, AI databases, systems, storage and I/O, GPU offload, and systems security." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Spectral:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --paper:   #f6f2ea;   /* background */
+    --card:    #fbf8f2;
+    --ink:     #1d1a17;   /* main text */
+    --muted:   #6b645a;   /* secondary text */
+    --faint:   #a89f92;   /* labels, dates */
+    --accent:  #9c3a25;   /* oxblood — links & highlights */
+    --accent-soft: #c9512f;
+    --line:    #ddd5c7;   /* hairlines */
+    --serif:   "Spectral", Georgia, serif;
+    --display: "Fraunces", Georgia, serif;
+    --mono:    "IBM Plex Mono", ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background:
+      radial-gradient(1200px 600px at 85% -10%, #fff8ec 0%, transparent 55%),
+      var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 72px 28px 96px;
+  }
+
+  /* ---------- entrance animation (staggered fade-up) ---------- */
+  .reveal { opacity: 0; transform: translateY(14px); animation: rise .7s cubic-bezier(.2,.7,.2,1) forwards; }
+  .reveal:nth-child(1){animation-delay:.05s}
+  .reveal:nth-child(2){animation-delay:.16s}
+  .reveal:nth-child(3){animation-delay:.27s}
+  .reveal:nth-child(4){animation-delay:.38s}
+  .reveal:nth-child(5){animation-delay:.49s}
+  .reveal:nth-child(6){animation-delay:.60s}
+  .reveal:nth-child(7){animation-delay:.71s}
+  .reveal:nth-child(8){animation-delay:.82s}
+  @keyframes rise { to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce){ .reveal{animation:none;opacity:1;transform:none} }
+
+  /* ---------- header ---------- */
+  header { margin-bottom: 8px; }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 14px;
+  }
+  h1 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(40px, 7vw, 62px);
+    line-height: 1.02;
+    letter-spacing: -.015em;
+    margin: 0 0 14px;
+  }
+  .role {
+    font-family: var(--serif);
+    font-size: 20px;
+    color: var(--muted);
+    margin: 0 0 4px;
+  }
+  .role strong { color: var(--ink); font-weight: 500; }
+  .place {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--faint);
+    margin: 0;
+  }
+
+  /* ---------- contact links ---------- */
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 22px;
+    margin: 26px 0 6px;
+    font-family: var(--mono);
+    font-size: 14px;
+  }
+  .links a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1.5px solid var(--line);
+    padding-bottom: 2px;
+    transition: color .18s, border-color .18s;
+  }
+  .links a:hover { color: var(--accent); border-color: var(--accent-soft); }
+
+  /* ---------- section scaffolding ---------- */
+  section { margin-top: 58px; }
+  .label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin: 0 0 24px;
+  }
+  .label::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  p.lead { font-size: 19px; margin: 0 0 14px; }
+  p { margin: 0 0 14px; }
+  a.inline { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--line); }
+  a.inline:hover { border-color: var(--accent); }
+
+  /* ---------- focus tags ---------- */
+  .tags { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 6px; }
+  .tag {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--muted);
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 5px 13px;
+  }
+
+  /* ---------- publications / talks ---------- */
+  .entry {
+    padding: 18px 0;
+    border-top: 1px solid var(--line);
+  }
+  .entry:first-of-type { border-top: none; }
+  .entry .ttl {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 18.5px;
+    color: var(--ink);
+    margin: 0 0 5px;
+  }
+  .entry .meta {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0 0 6px;
+  }
+  .entry .note {
+    font-size: 16px;
+    color: var(--muted);
+    font-style: italic;
+    margin: 0;
+  }
+  .badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 2px 9px;
+    border-radius: 4px;
+    margin-right: 9px;
+    vertical-align: 1px;
+  }
+  .b-accept { background: #2f6b3a; color: #fff; }
+  .b-soon   { background: var(--accent); color: #fff; }
+  .b-review { background: transparent; color: var(--faint); border: 1px solid var(--line); }
+  .b-pub    { background: #3a3531; color: #fff; }
+
+  /* ---------- experience ---------- */
+  .job { padding: 16px 0; border-top: 1px solid var(--line); }
+  .job:first-of-type { border-top: none; }
+  .job .head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; }
+  .job .pos { font-weight: 500; }
+  .job .when { font-family: var(--mono); font-size: 13px; color: var(--faint); white-space: nowrap; }
+  .job .org { color: var(--muted); font-size: 16.5px; margin: 2px 0 0; }
+
+  ul.svc { list-style: none; padding: 0; margin: 0; }
+  ul.svc li { padding: 11px 0; border-top: 1px solid var(--line); }
+  ul.svc li:first-child { border-top: none; }
+  ul.svc .when { font-family: var(--mono); font-size: 13px; color: var(--faint); }
+
+  /* ---------- footer ---------- */
+  footer {
+    margin-top: 72px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--faint);
+  }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+  <!-- ================= HEADER ================= -->
+  <header class="reveal">
+    <p class="eyebrow">Database Kernel · AI · Systems · Storage &amp; I/O</p>
+    <!-- EDIT: your name -->
+    <h1>Rajarshi Chowdhury</h1>
+    <!-- EDIT: your role / one-line description -->
+    <p class="role"><strong>Database Kernel Architect</strong> — Consulting Member of Technical Staff, Oracle</p>
+    <p class="place">Redwood City, California</p>
+
+    <!-- EDIT: contact + profile links -->
+    <nav class="links">
+      <a href="mailto:Rajarshi.Chowdhury@Oracle.com">Email</a>
+      <a href="https://www.linkedin.com/in/rajarshichowdhury/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://orcid.org/0009-0007-7032-2450" target="_blank" rel="noopener">ORCID</a>
+    </nav>
+  </header>
+
+  <!-- ================= ABOUT ================= -->
+  <section class="reveal">
+    <h2 class="label">About</h2>
+    <!-- EDIT: short bio -->
+    <p class="lead">For the past seventeen years I've worked on the core of Database Kernel — operating-system internals, processors and memory, and how data moves between storage, network, and CPU. Lately my work has reached further up the stack: query processing, GPU offload for data-intensive and AI workloads, and the growing overlap of AI and databases. I like building the kind of low-level systems that quietly hold everything else up, and I write and speak about it at systems, storage, database, and security venues.</p>
+  </section>
+
+  <!-- ================= FOCUS AREAS ================= -->
+  <section class="reveal">
+    <h2 class="label">Focus Areas</h2>
+    <!-- EDIT: add/remove tags freely -->
+    <div class="tags">
+      <span class="tag">Database kernel development</span>
+      <span class="tag">AI databases</span>
+      <span class="tag">Database offload to GPU</span>
+      <span class="tag">GPU acceleration</span>
+      <span class="tag">Query processing</span>
+      <span class="tag">Processor &amp; memory architecture</span>
+      <span class="tag">Operating-system internals</span>
+      <span class="tag">NVMe-over-Fabrics</span>
+      <span class="tag">RDMA networking</span>
+      <span class="tag">Asynchronous I/O (io_uring)</span>
+      <span class="tag">SPDK / DPDK</span>
+      <span class="tag">Storage systems</span>
+      <span class="tag">Cloud resource management</span>
+      <span class="tag">Systems security</span>
+    </div>
+  </section>
+
+  <!-- ================= SELECTED PUBLICATIONS ================= -->
+  <section class="reveal">
+    <h2 class="label">Selected Publications · 2026</h2>
+
+    <!-- EDIT each entry. Badge classes: b-accept (Accepted) · b-soon (Upcoming) · b-review (Under review) · b-pub (Published) -->
+    <div class="entry">
+      <p class="ttl"><span class="badge b-accept">Accepted</span>A Secure, Manifest-Based Enabler for Delegated Promotion of Privileged Software Components</p>
+      <p class="meta"><a class="inline" href="https://dsn2026.github.io/cpaccepted.html" target="_blank" rel="noopener">IEEE/IFIP DSN 2026</a></p>
+      <p class="note">A security architecture for automated patching in air-gapped environments.</p>
+    </div>
+
+    <div class="entry">
+      <p class="ttl"><span class="badge b-accept">Accepted</span>I/O Resource Management in Oracle Exadata and Oracle Exascale</p>
+      <p class="meta"><a class="inline" href="https://vldb.org/2026/" target="_blank" rel="noopener">VLDB 2026</a></p>
+      <p class="note">Control-plane / data-plane architecture for enforcing strict SLAs in multi-tenant environments.</p>
+    </div>
+
+    <div class="entry">
+      <p class="ttl"><span class="badge b-review">Under review</span>Precision I/O Governance in Heterogeneous Hyperscale Storage with Oracle IORM</p>
+      <p class="meta"><a class="inline" href="https://conferences.computer.org/IC2E/2026/" target="_blank" rel="noopener">IEEE IC2E 2026</a></p>
+      <p class="note">The I/O Resource Manager used in Oracle Exadata / Exascale to resolve "noisy-neighbor" conflicts at hyperscale.</p>
+    </div>
+  </section>
+
+  <!-- ================= UPCOMING CONFERENCES & TALKS ================= -->
+  <section class="reveal">
+    <h2 class="label">Upcoming Conferences &amp; Talks</h2>
+
+    <div class="entry">
+      <p class="ttl"><span class="badge b-soon">Talk</span>Invited talk — Parallel Data Lab (PDL) Speaker Series</p>
+      <p class="meta"><a class="inline" href="https://www.pdl.cmu.edu/talk-series/index.shtml" target="_blank" rel="noopener">Carnegie Mellon University · PDL</a></p>
+    </div>
+
+    <div class="entry">
+      <p class="ttl"><span class="badge b-soon">Presentation</span>A Secure, Manifest-Based Enabler for Delegated Promotion of Privileged Software Components</p>
+      <p class="meta"><a class="inline" href="https://dsn2026.github.io/cproglance.html" target="_blank" rel="noopener">IEEE/IFIP DSN 2026 · Program</a></p>
+    </div>
+  </section>
+
+  <!-- ================= EARLIER PUBLICATIONS ================= -->
+  <section class="reveal">
+    <h2 class="label">Earlier Work</h2>
+
+    <div class="entry">
+      <p class="ttl"><span class="badge b-pub">Talk</span>Integrating SPDK with Oracle RDBMS</p>
+      <p class="meta">SPDK, PMDK &amp; Intel® VTune™ Amplifier Summit · April 2019</p>
+    </div>
+
+    <div class="entry">
+      <p class="ttl"><span class="badge b-pub">Talk</span>Top 10 Tips and Tricks for Getting the Best Database Performance from Oracle Solaris Systems</p>
+      <p class="meta">Oracle OpenWorld, San Francisco · 2013</p>
+    </div>
+
+    <div class="entry">
+      <p class="ttl"><span class="badge b-pub">Paper</span>Design and Implementation of Parallel Pattern Matching Algorithms for Multi-Core Systems</p>
+      <p class="meta">International Journal of Advanced Computing (IJAC), Vol. 2, Issue 4 · October 2010</p>
+    </div>
+  </section>
+
+  <!-- ================= PATENTS ================= -->
+  <section class="reveal">
+    <h2 class="label">Patents</h2>
+    <!-- EDIT: remove this section if you'd rather not list pending patents publicly -->
+    <div class="entry">
+      <p class="ttl">Hybrid I/O Management Architecture with Tiered Dispatch</p>
+      <p class="meta">Patent pending · Oracle</p>
+    </div>
+    <div class="entry">
+      <p class="ttl">Secure Software Component Activation through Signature-Governed Attribute Change</p>
+      <p class="meta">Patent pending · Oracle</p>
+    </div>
+    <div class="entry">
+      <p class="ttl">Hyper-Converged Storage Architecture with Zero-Copy NVMe-over-Fabrics for High-Performance Clustered Systems</p>
+      <p class="meta">Patent pending · Oracle</p>
+    </div>
+  </section>
+
+  <!-- ================= EXPERIENCE ================= -->
+  <section class="reveal">
+    <h2 class="label">Experience</h2>
+
+    <div class="job">
+      <div class="head">
+        <span class="pos">Consulting Member of Technical Staff</span>
+        <span class="when">Feb 2017 — Present</span>
+      </div>
+      <p class="org">Oracle</p>
+    </div>
+
+    <div class="job">
+      <div class="head">
+        <span class="pos">Principal Member of Technical Staff</span>
+        <span class="when">Jan 2010 — Feb 2017</span>
+      </div>
+      <p class="org">Oracle (via Sun Microsystems acquisition)</p>
+    </div>
+
+    <div class="job">
+      <div class="head">
+        <span class="pos">Software Engineer</span>
+        <span class="when">Aug 2008 — Jan 2010</span>
+      </div>
+      <p class="org">Sun Microsystems</p>
+    </div>
+  </section>
+
+  <!-- ================= SERVICE ================= -->
+  <section class="reveal">
+    <h2 class="label">Peer Review &amp; Service</h2>
+    <!-- EDIT: keep this current as roles are confirmed -->
+    <ul class="svc">
+      <li><span class="when">2026</span> &nbsp;Program Committee Member &amp; Reviewer — SIGCSE Virtual</li>
+      <li><span class="when">2026</span> &nbsp;Reviewer — ICANN</li>
+    </ul>
+  </section>
+
+  <!-- ================= EDUCATION ================= -->
+  <section class="reveal">
+    <h2 class="label">Education</h2>
+    <div class="job">
+      <div class="head">
+        <span class="pos">M.Tech, Computer Science &amp; Engineering</span>
+        <span class="when">2008</span>
+      </div>
+      <p class="org">Indian Institute of Technology (IIT) Roorkee</p>
+    </div>
+    <div class="job">
+      <div class="head">
+        <span class="pos">B.Tech, Computer Science &amp; Engineering</span>
+        <span class="when">2005</span>
+      </div>
+      <p class="org">Govt. College of Engineering &amp; Textile Technology</p>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer>
+    <!-- EDIT: year + name -->
+    © 2026 Rajarshi Chowdhury ·
+    <a href="mailto:Rajarshi.Chowdhury@Oracle.com">Rajarshi.Chowdhury@Oracle.com</a> ·
+    <a href="https://www.linkedin.com/in/rajarshichowdhury/" target="_blank" rel="noopener">LinkedIn</a> ·
+    <a href="https://orcid.org/0009-0007-7032-2450" target="_blank" rel="noopener">ORCID</a>
+  </footer>
+
+</div>
+</body>
+</html>
