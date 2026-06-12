@@ -94,6 +94,35 @@
     margin: 0;
   }
 
+  /* ---------- tabs ---------- */
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 4px;
+    margin: 34px 0 8px;
+    border-bottom: 1px solid var(--line);
+  }
+  .tab-btn {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--faint);
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: color .18s, border-color .18s;
+  }
+  .tab-btn:hover { color: var(--accent); }
+  .tab-btn.active { color: var(--ink); border-bottom-color: var(--accent); }
+
+  .panel { display: none; }
+  .panel.active { display: block; animation: rise .45s cubic-bezier(.2,.7,.2,1) both; }
+  .panel > section:first-child { margin-top: 30px; }
+
   /* ---------- contact links ---------- */
   .links {
     display: flex;
@@ -237,6 +266,17 @@
     </nav>
   </header>
 
+  <!-- ================= TAB NAVIGATION ================= -->
+  <nav class="tabs reveal" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" data-tab="overview">Overview</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="publications">Publications</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="talks">Talks</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="patents">Patents</button>
+  </nav>
+
+  <!-- ================= OVERVIEW PANEL ================= -->
+  <div class="panel active" id="overview" role="tabpanel">
+
   <!-- ================= ABOUT ================= -->
   <section class="reveal">
     <h2 class="label">About</h2>
@@ -263,83 +303,6 @@
       <span class="tag">Storage systems</span>
       <span class="tag">Cloud resource management</span>
       <span class="tag">Systems security</span>
-    </div>
-  </section>
-
-  <!-- ================= SELECTED PUBLICATIONS ================= -->
-  <section class="reveal">
-    <h2 class="label">Selected Publications · 2026</h2>
-
-    <!-- EDIT each entry. Badge classes: b-accept (Accepted) · b-soon (Upcoming) · b-review (Under review) · b-pub (Published) -->
-    <div class="entry">
-      <p class="ttl"><span class="badge b-accept">Accepted</span>A Secure, Manifest-Based Enabler for Delegated Promotion of Privileged Software Components</p>
-      <p class="meta"><a class="inline" href="https://dsn2026.github.io/cpaccepted.html" target="_blank" rel="noopener">IEEE/IFIP DSN 2026</a></p>
-      <p class="note">A security architecture for automated patching in air-gapped environments.</p>
-    </div>
-
-    <div class="entry">
-      <p class="ttl"><span class="badge b-accept">Accepted</span>I/O Resource Management in Oracle Exadata and Oracle Exascale</p>
-      <p class="meta"><a class="inline" href="https://vldb.org/2026/" target="_blank" rel="noopener">VLDB 2026</a></p>
-      <p class="note">Control-plane / data-plane architecture for enforcing strict SLAs in multi-tenant environments.</p>
-    </div>
-
-    <div class="entry">
-      <p class="ttl"><span class="badge b-review">Under review</span>Precision I/O Governance in Heterogeneous Hyperscale Storage with Oracle IORM</p>
-      <p class="meta"><a class="inline" href="https://conferences.computer.org/IC2E/2026/" target="_blank" rel="noopener">IEEE IC2E 2026</a></p>
-      <p class="note">The I/O Resource Manager used in Oracle Exadata / Exascale to resolve "noisy-neighbor" conflicts at hyperscale.</p>
-    </div>
-  </section>
-
-  <!-- ================= UPCOMING CONFERENCES & TALKS ================= -->
-  <section class="reveal">
-    <h2 class="label">Upcoming Conferences &amp; Talks</h2>
-
-    <div class="entry">
-      <p class="ttl"><span class="badge b-soon">Talk</span>Invited talk — Parallel Data Lab (PDL) Speaker Series</p>
-      <p class="meta"><a class="inline" href="https://www.pdl.cmu.edu/talk-series/index.shtml" target="_blank" rel="noopener">Carnegie Mellon University · PDL</a></p>
-    </div>
-
-    <div class="entry">
-      <p class="ttl"><span class="badge b-soon">Presentation</span>A Secure, Manifest-Based Enabler for Delegated Promotion of Privileged Software Components</p>
-      <p class="meta"><a class="inline" href="https://dsn2026.github.io/cproglance.html" target="_blank" rel="noopener">IEEE/IFIP DSN 2026 · Program</a></p>
-    </div>
-  </section>
-
-  <!-- ================= EARLIER PUBLICATIONS ================= -->
-  <section class="reveal">
-    <h2 class="label">Earlier Work</h2>
-
-    <div class="entry">
-      <p class="ttl"><span class="badge b-pub">Talk</span>Integrating SPDK with Oracle RDBMS</p>
-      <p class="meta">SPDK, PMDK &amp; Intel® VTune™ Amplifier Summit · April 2019</p>
-    </div>
-
-    <div class="entry">
-      <p class="ttl"><span class="badge b-pub">Talk</span>Top 10 Tips and Tricks for Getting the Best Database Performance from Oracle Solaris Systems</p>
-      <p class="meta">Oracle OpenWorld, San Francisco · 2013</p>
-    </div>
-
-    <div class="entry">
-      <p class="ttl"><span class="badge b-pub">Paper</span>Design and Implementation of Parallel Pattern Matching Algorithms for Multi-Core Systems</p>
-      <p class="meta">International Journal of Advanced Computing (IJAC), Vol. 2, Issue 4 · October 2010</p>
-    </div>
-  </section>
-
-  <!-- ================= PATENTS ================= -->
-  <section class="reveal">
-    <h2 class="label">Patents</h2>
-    <!-- EDIT: remove this section if you'd rather not list pending patents publicly -->
-    <div class="entry">
-      <p class="ttl">Hybrid I/O Management Architecture with Tiered Dispatch</p>
-      <p class="meta">Patent pending · Oracle</p>
-    </div>
-    <div class="entry">
-      <p class="ttl">Secure Software Component Activation through Signature-Governed Attribute Change</p>
-      <p class="meta">Patent pending · Oracle</p>
-    </div>
-    <div class="entry">
-      <p class="ttl">Hyper-Converged Storage Architecture with Zero-Copy NVMe-over-Fabrics for High-Performance Clustered Systems</p>
-      <p class="meta">Patent pending · Oracle</p>
     </div>
   </section>
 
@@ -402,6 +365,102 @@
     </div>
   </section>
 
+  </div><!-- /overview panel -->
+
+  <!-- ================= PUBLICATIONS PANEL ================= -->
+  <div class="panel" id="publications" role="tabpanel">
+
+    <!-- ----- Selected Publications ----- -->
+    <section class="reveal">
+      <h2 class="label">Selected Publications · 2026</h2>
+
+      <!-- EDIT each entry. Badge classes: b-accept (Accepted) · b-soon (Upcoming) · b-review (Under review) · b-pub (Published) -->
+      <div class="entry">
+        <p class="ttl"><span class="badge b-accept">Accepted</span>A Secure, Manifest-Based Enabler for Delegated Promotion of Privileged Software Components</p>
+        <p class="meta"><a class="inline" href="https://dsn2026.github.io/cpaccepted.html" target="_blank" rel="noopener">IEEE/IFIP DSN 2026</a></p>
+        <p class="note">A security architecture for automated patching in air-gapped environments.</p>
+      </div>
+
+      <div class="entry">
+        <p class="ttl"><span class="badge b-accept">Accepted</span>I/O Resource Management in Oracle Exadata and Oracle Exascale</p>
+        <p class="meta"><a class="inline" href="https://vldb.org/2026/" target="_blank" rel="noopener">VLDB 2026</a></p>
+        <p class="note">Control-plane / data-plane architecture for enforcing strict SLAs in multi-tenant environments.</p>
+      </div>
+
+      <div class="entry">
+        <p class="ttl"><span class="badge b-review">Under review</span>Precision I/O Governance in Heterogeneous Hyperscale Storage with Oracle IORM</p>
+        <p class="meta"><a class="inline" href="https://conferences.computer.org/IC2E/2026/" target="_blank" rel="noopener">IEEE IC2E 2026</a></p>
+        <p class="note">The I/O Resource Manager used in Oracle Exadata / Exascale to resolve "noisy-neighbor" conflicts at hyperscale.</p>
+      </div>
+    </section>
+
+    <!-- ----- Earlier Papers ----- -->
+    <section class="reveal">
+      <h2 class="label">Earlier Papers</h2>
+
+      <div class="entry">
+        <p class="ttl"><span class="badge b-pub">Paper</span>Design and Implementation of Parallel Pattern Matching Algorithms for Multi-Core Systems</p>
+        <p class="meta">International Journal of Advanced Computing (IJAC), Vol. 2, Issue 4 · October 2010</p>
+      </div>
+    </section>
+
+  </div><!-- /publications panel -->
+
+  <!-- ================= TALKS PANEL ================= -->
+  <div class="panel" id="talks" role="tabpanel">
+
+    <!-- ----- Upcoming Conferences & Talks ----- -->
+    <section class="reveal">
+      <h2 class="label">Upcoming Conferences &amp; Talks</h2>
+
+      <div class="entry">
+        <p class="ttl"><span class="badge b-soon">Talk</span>Invited talk — Parallel Data Lab (PDL) Speaker Series</p>
+        <p class="meta"><a class="inline" href="https://www.pdl.cmu.edu/talk-series/index.shtml" target="_blank" rel="noopener">Carnegie Mellon University · PDL</a></p>
+      </div>
+
+      <div class="entry">
+        <p class="ttl"><span class="badge b-soon">Presentation</span>A Secure, Manifest-Based Enabler for Delegated Promotion of Privileged Software Components</p>
+        <p class="meta"><a class="inline" href="https://dsn2026.github.io/cproglance.html" target="_blank" rel="noopener">IEEE/IFIP DSN 2026 · Program</a></p>
+      </div>
+    </section>
+
+    <!-- ----- Earlier Talks ----- -->
+    <section class="reveal">
+      <h2 class="label">Earlier Talks</h2>
+
+      <div class="entry">
+        <p class="ttl"><span class="badge b-pub">Talk</span>Integrating SPDK with Oracle RDBMS</p>
+        <p class="meta">SPDK, PMDK &amp; Intel® VTune™ Amplifier Summit · April 2019</p>
+      </div>
+
+      <div class="entry">
+        <p class="ttl"><span class="badge b-pub">Talk</span>Top 10 Tips and Tricks for Getting the Best Database Performance from Oracle Solaris Systems</p>
+        <p class="meta">Oracle OpenWorld, San Francisco · 2013</p>
+      </div>
+    </section>
+
+  </div><!-- /talks panel -->
+
+  <!-- ================= PATENTS PANEL ================= -->
+  <div class="panel" id="patents" role="tabpanel">
+    <section class="reveal">
+      <h2 class="label">Patents</h2>
+      <!-- EDIT: remove this section if you'd rather not list pending patents publicly -->
+      <div class="entry">
+        <p class="ttl">Hybrid I/O Management Architecture with Tiered Dispatch</p>
+        <p class="meta">Patent pending · Oracle</p>
+      </div>
+      <div class="entry">
+        <p class="ttl">Secure Software Component Activation through Signature-Governed Attribute Change</p>
+        <p class="meta">Patent pending · Oracle</p>
+      </div>
+      <div class="entry">
+        <p class="ttl">Hyper-Converged Storage Architecture with Zero-Copy NVMe-over-Fabrics for High-Performance Clustered Systems</p>
+        <p class="meta">Patent pending · Oracle</p>
+      </div>
+    </section>
+  </div><!-- /patents panel -->
+
   <!-- ================= FOOTER ================= -->
   <footer>
     <!-- EDIT: year + name -->
@@ -412,5 +471,35 @@
   </footer>
 
 </div>
+
+<script>
+  (function () {
+    var buttons = document.querySelectorAll('.tab-btn');
+    var panels  = document.querySelectorAll('.panel');
+
+    function activate(name) {
+      buttons.forEach(function (b) {
+        var on = b.dataset.tab === name;
+        b.classList.toggle('active', on);
+        b.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      panels.forEach(function (p) {
+        p.classList.toggle('active', p.id === name);
+      });
+      if (history.replaceState) history.replaceState(null, '', '#' + name);
+    }
+
+    buttons.forEach(function (b) {
+      b.addEventListener('click', function () { activate(b.dataset.tab); });
+    });
+
+    // Open a tab directly via URL hash (e.g. #publications)
+    var initial = (location.hash || '').replace('#', '');
+    if (initial && document.getElementById(initial) &&
+        document.getElementById(initial).classList.contains('panel')) {
+      activate(initial);
+    }
+  })();
+</script>
 </body>
 </html>
