@@ -188,10 +188,18 @@
 
   /* ---------- publications / talks ---------- */
   .entry {
-    padding: 18px 0;
+    padding: 18px 14px;
+    margin: 0 -14px;
     border-top: 1px solid var(--line);
+    border-radius: 6px;
+    transition: background .2s ease, box-shadow .2s ease, transform .2s ease;
   }
   .entry:first-of-type { border-top: none; }
+  .entry:hover {
+    background: var(--card);
+    box-shadow: inset 3px 0 0 var(--accent-soft);
+    transform: translateX(3px);
+  }
   .entry .ttl {
     font-family: var(--serif);
     font-weight: 500;
@@ -222,10 +230,10 @@
     margin-right: 9px;
     vertical-align: 1px;
   }
-  .b-accept { background: #2f6b3a; color: #fff; }
-  .b-soon   { background: var(--accent); color: #fff; }
-  .b-review { background: transparent; color: var(--faint); border: 1px solid var(--line); }
-  .b-pub    { background: #3a3531; color: #fff; }
+  .b-accept { background: rgba(47, 107, 58, .12);  color: #2f6b3a;      border: 1px solid rgba(47, 107, 58, .38); }
+  .b-soon   { background: rgba(156, 58, 37, .12);  color: var(--accent); border: 1px solid rgba(156, 58, 37, .38); }
+  .b-review { background: transparent;             color: var(--faint);  border: 1px solid var(--line); }
+  .b-pub    { background: rgba(58, 53, 49, .09);    color: #3a3531;      border: 1px solid rgba(58, 53, 49, .30); }
 
   /* ---------- experience ---------- */
   .job { padding: 16px 0; border-top: 1px solid var(--line); }
