@@ -260,7 +260,7 @@
 
     <!-- EDIT: contact + profile links -->
     <nav class="links">
-      <a href="mailto:Rajarshi.Chowdhury@Oracle.com">Email</a>
+      <a class="email-link" data-user="Rajarshi.Chowdhury" data-domain="Oracle.com" href="#">Email</a>
       <a href="https://www.linkedin.com/in/rajarshichowdhury/" target="_blank" rel="noopener">LinkedIn</a>
       <a href="https://orcid.org/0009-0007-7032-2450" target="_blank" rel="noopener">ORCID</a>
     </nav>
@@ -272,6 +272,7 @@
     <button class="tab-btn" role="tab" aria-selected="false" data-tab="publications">Publications</button>
     <button class="tab-btn" role="tab" aria-selected="false" data-tab="talks">Talks</button>
     <button class="tab-btn" role="tab" aria-selected="false" data-tab="patents">Patents</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="service">Service</button>
   </nav>
 
   <!-- ================= OVERVIEW PANEL ================= -->
@@ -333,17 +334,6 @@
       </div>
       <p class="org">Sun Microsystems</p>
     </div>
-  </section>
-
-  <!-- ================= SERVICE ================= -->
-  <section class="reveal">
-    <h2 class="label">Peer Review &amp; Service</h2>
-    <!-- EDIT: keep this current as roles are confirmed -->
-    <ul class="svc">
-      <li><span class="when">2026</span> &nbsp;Industry Session Chair — DSN 2026</li>
-      <li><span class="when">2026</span> &nbsp;Program Committee Member &amp; Reviewer — SIGCSE Virtual</li>
-      <li><span class="when">2026</span> &nbsp;Reviewer — ICANN</li>
-    </ul>
   </section>
 
   <!-- ================= EDUCATION ================= -->
@@ -461,11 +451,24 @@
     </section>
   </div><!-- /patents panel -->
 
+  <!-- ================= SERVICE PANEL ================= -->
+  <div class="panel" id="service" role="tabpanel">
+    <section class="reveal">
+      <h2 class="label">Peer Review &amp; Service</h2>
+      <!-- EDIT: keep this current as roles are confirmed -->
+      <ul class="svc">
+        <li><span class="when">2026</span> &nbsp;Industry Session Chair — DSN 2026</li>
+        <li><span class="when">2026</span> &nbsp;Program Committee Member &amp; Reviewer — SIGCSE Virtual</li>
+        <li><span class="when">2026</span> &nbsp;Reviewer — ICANN</li>
+      </ul>
+    </section>
+  </div><!-- /service panel -->
+
   <!-- ================= FOOTER ================= -->
   <footer>
     <!-- EDIT: year + name -->
     © 2026 Rajarshi Chowdhury ·
-    <a href="mailto:Rajarshi.Chowdhury@Oracle.com">Rajarshi.Chowdhury@Oracle.com</a> ·
+    <a class="email-link" data-user="Rajarshi.Chowdhury" data-domain="Oracle.com" data-show="1" href="#">email</a> ·
     <a href="https://www.linkedin.com/in/rajarshichowdhury/" target="_blank" rel="noopener">LinkedIn</a> ·
     <a href="https://orcid.org/0009-0007-7032-2450" target="_blank" rel="noopener">ORCID</a>
   </footer>
@@ -499,6 +502,14 @@
         document.getElementById(initial).classList.contains('panel')) {
       activate(initial);
     }
+
+    // Assemble email links at runtime so the address never appears in the
+    // page source — keeps harvesting bots from scraping it.
+    document.querySelectorAll('.email-link').forEach(function (a) {
+      var addr = a.dataset.user + '@' + a.dataset.domain;
+      a.setAttribute('href', 'mailto:' + addr);
+      if (a.dataset.show) a.textContent = addr;
+    });
   })();
 </script>
 </body>
