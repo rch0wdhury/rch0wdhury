@@ -44,10 +44,12 @@
   }
 
   .wrap {
-    max-width: 760px;
+    max-width: 860px;
     margin: 0 auto;
     padding: 72px 28px 96px;
   }
+  /* keep running prose at a comfortable reading measure even as the frame widens */
+  p.lead, .entry .note { max-width: 720px; }
 
   /* ---------- entrance animation (staggered fade-up) ---------- */
   .reveal { opacity: 0; transform: translateY(14px); animation: rise .7s cubic-bezier(.2,.7,.2,1) forwards; }
