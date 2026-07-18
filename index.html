@@ -209,6 +209,11 @@
     color: var(--ink);
     margin: 0 0 5px;
   }
+  .entry .authors {
+    font-size: 15px;
+    color: var(--muted);
+    margin: 0 0 5px;
+  }
   .entry .meta {
     font-family: var(--mono);
     font-size: 13px;
@@ -301,7 +306,7 @@
   <section class="reveal">
     <h2 class="label">About</h2>
     <!-- EDIT: short bio -->
-    <p class="lead">For the past seventeen years I've worked on the core of Database Kernel — operating-system internals, processors and memory, and how data moves between storage, network, and CPU. Lately my work has reached further up the stack: query processing, GPU offload for data-intensive and AI workloads, and the growing overlap of AI and databases. I like building the kind of low-level systems that quietly hold everything else up, and I write and speak about it at systems, storage, database, and security venues.</p>
+    <p class="lead">I work on the core of the database kernel — operating-system internals, processors and memory, and how data moves between storage, network, and CPU. My work also reaches further up the stack: query processing, GPU offload for data-intensive and AI workloads, and the growing overlap of AI and databases. I like building the kind of low-level systems that quietly hold everything else up, and I write and speak about it at systems, storage, database, and security venues.</p>
   </section>
 
   <!-- ================= FOCUS AREAS ================= -->
@@ -385,19 +390,27 @@
 
       <!-- EDIT each entry. Badge classes: b-accept (Accepted) · b-soon (Upcoming) · b-review (Under review) · b-pub (Published) -->
       <div class="entry">
-        <p class="ttl"><span class="badge b-accept">Accepted</span><a class="inline" href="https://arxiv.org/abs/2605.28991" target="_blank" rel="noopener">A Secure, Manifest-Based Enabler for Delegated Promotion of Privileged Software Components</a></p>
+        <p class="ttl"><span class="badge b-soon">Upcoming</span>I/O for LLM Inference: A Survey of Storage and Memory Bottlenecks</p>
+        <p class="meta"><a class="inline" href="https://link.springer.com/journal/10462" target="_blank" rel="noopener">Artificial Intelligence Review (Springer Nature)</a> · accepted, to appear</p>
+      </div>
+
+      <div class="entry">
+        <p class="ttl"><span class="badge b-accept">Accepted</span><a class="inline" href="https://arxiv.org/abs/2605.28991" target="_blank" rel="noopener">A Secure, Manifest-Based Framework for Delegated Privilege Promotion</a></p>
+        <p class="authors">Rajarshi Chowdhury, Akshay Shah</p>
         <p class="meta"><a class="inline" href="https://dsn2026.github.io/cpaccepted.html" target="_blank" rel="noopener">IEEE/IFIP DSN 2026</a></p>
         <p class="note">A security architecture for automated patching in air-gapped environments.</p>
       </div>
 
       <div class="entry">
         <p class="ttl"><span class="badge b-accept">Accepted</span><a class="inline" href="https://arxiv.org/abs/2605.29006" target="_blank" rel="noopener">IORM: Hierarchical I/O Governance for Thousands of Consolidated Databases on Oracle Exadata</a></p>
+        <p class="authors">Rajarshi Chowdhury, Akshay Shah, Zakaria Alrmaih, Chenhao Guo, Anubhav Singh, Sue Lee</p>
         <p class="meta"><a class="inline" href="https://vldb.org/2026/" target="_blank" rel="noopener">VLDB 2026</a></p>
         <p class="note">Control-plane / data-plane architecture for enforcing strict SLAs in multi-tenant environments.</p>
       </div>
 
       <div class="entry">
-        <p class="ttl"><span class="badge b-review">Under review</span>Precision I/O Governance in Heterogeneous Hyperscale Storage with Oracle IORM</p>
+        <p class="ttl"><span class="badge b-accept">Accepted</span>Hardware-Transparent I/O Governance in Disaggregated Heterogeneous Storage</p>
+        <p class="authors">Rajarshi Chowdhury, Akshay Shah, Sue K. Lee</p>
         <p class="meta"><a class="inline" href="https://conferences.computer.org/IC2E/2026/" target="_blank" rel="noopener">IEEE IC2E 2026</a></p>
         <p class="note">The I/O Resource Manager used in Oracle Exadata / Exascale to resolve "noisy-neighbor" conflicts at hyperscale.</p>
       </div>
@@ -430,6 +443,11 @@
         <p class="ttl"><span class="badge b-soon">Talk</span>IORM: Hierarchical I/O Governance for Thousands of Consolidated Databases on Oracle Exadata</p>
         <p class="meta"><a class="inline" href="https://vldb.org/2026/" target="_blank" rel="noopener">VLDB 2026</a> · September 2026</p>
       </div>
+
+      <div class="entry">
+        <p class="ttl"><span class="badge b-soon">Talk</span>Hardware-Transparent I/O Governance in Disaggregated Heterogeneous Storage</p>
+        <p class="meta"><a class="inline" href="https://conferences.computer.org/IC2E/2026/" target="_blank" rel="noopener">IEEE IC2E 2026</a> · October 2026</p>
+      </div>
     </section>
 
     <!-- ----- Earlier Talks ----- -->
@@ -442,7 +460,7 @@
       </div>
 
       <div class="entry">
-        <p class="ttl"><span class="badge b-pub">Talk</span>A Secure, Manifest-Based Enabler for Delegated Promotion of Privileged Software Components</p>
+        <p class="ttl"><span class="badge b-pub">Talk</span>A Secure, Manifest-Based Framework for Delegated Privilege Promotion</p>
         <p class="meta"><a class="inline" href="https://dsn2026.github.io/cproglance.html" target="_blank" rel="noopener">IEEE/IFIP DSN 2026 · Program</a> · June 2026</p>
       </div>
 
