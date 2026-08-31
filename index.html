@@ -565,9 +565,15 @@
       <h2 class="label">Open Source</h2>
 
       <div class="entry">
+        <p class="ttl"><span class="badge b-pub">Library</span>policybook</p>
+        <p class="meta"><a class="inline" href="https://rch0wdhury.github.io/policybook/" target="_blank" rel="noopener">rch0wdhury.github.io/policybook</a> · <a class="inline" href="https://github.com/rch0wdhury/policybook" target="_blank" rel="noopener">github.com/rch0wdhury/policybook</a> · TypeScript / Python / C</p>
+        <p class="note">Runnable decision policies for cache eviction, rate limiting, retries, and LLM KV-cache eviction, each with a one-page explainer, shared test vectors, and reproducible benchmarks. Copy a policy into your repo via the CLI (<code>npx policybook add</code>), or install the whole set with pip; C ships as a single header. MIT licensed.</p>
+      </div>
+
+      <div class="entry">
         <p class="ttl"><span class="badge b-pub">Tool</span>uringscope</p>
         <p class="meta"><a class="inline" href="https://github.com/rch0wdhury/uringscope" target="_blank" rel="noopener">github.com/rch0wdhury/uringscope</a> · C / eBPF</p>
-        <p class="note">A single-binary flight recorder and "doctor" for io_uring — attaches to any process and reconstructs request behavior across the kernel/userspace boundary. Per-opcode latency histograms, async-punt and batching analysis, and a hazard mode for catching buffer races.</p>
+        <p class="note">Kernel and userspace tracing for io_uring: a single-binary tracer and analyzer that attaches to any process and reconstructs what each request did, from per-opcode latency and hidden async-worker punts to batching efficiency and stalls. Each report ends with findings that name the problem, show the evidence, and suggest a fix; a <code>--check</code> mode catches buffer races and use-after-free hazards, with JSON reports, CI gates, live mode, OpenMetrics, and Perfetto timelines alongside. Built on CO-RE eBPF, so it survives the kernel's io_uring tracepoint churn instead of pinning to one release.</p>
       </div>
     </section>
   </div><!-- /opensource panel -->
