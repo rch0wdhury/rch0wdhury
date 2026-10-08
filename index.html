@@ -29,6 +29,10 @@
     /* ---- portrait ---- */
     --portrait-size: 156px;
     --portrait-radius: 999px;
+
+    /* ---- small icons (used as CSS masks so they inherit text color) ---- */
+    --i-ext: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M3.2 1.2h5.6v5.6M8.6 1.4 1.4 8.6' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    --i-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 1v6.2M2.2 4.6 5 7.4l2.8-2.8M1.5 9h7' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   }
 
   * { box-sizing: border-box; }
@@ -71,7 +75,7 @@
   /* ---------- header ---------- */
   header { margin-bottom: 8px; }
 
-  /* NEW: name block on the left, portrait on the right */
+  /* name block on the left, portrait on the right */
   .masthead {
     display: flex;
     align-items: flex-start;
@@ -80,7 +84,6 @@
   }
   .masthead-text { flex: 1 1 auto; min-width: 0; }
 
-  /* NEW: the portrait itself */
   .portrait {
     flex: 0 0 auto;
     width: var(--portrait-size);
@@ -135,7 +138,7 @@
     margin: 0;
   }
 
-  /* NEW: stack the portrait above the name on narrow screens */
+  /* stack the portrait above the name on narrow screens */
   @media (max-width: 640px) {
     .masthead {
       flex-direction: column-reverse;
@@ -292,6 +295,200 @@
   .b-review { background: transparent;             color: var(--faint);  border: 1px solid var(--line); }
   .b-pub    { background: rgba(58, 53, 49, .09);    color: #3a3531;      border: 1px solid rgba(58, 53, 49, .30); }
 
+  /* ---------- link chips (Publisher · PDF · arXiv · Code · Cite) ---------- */
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 12px 0 0;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    line-height: 1;
+    color: var(--muted);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 6px 11px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color .18s, background .18s, border-color .18s, transform .18s, box-shadow .18s;
+  }
+  .chip:hover { color: var(--accent); border-color: var(--accent-soft); transform: translateY(-1px); }
+  .chip:focus-visible { outline: 2px solid var(--accent-soft); outline-offset: 2px; }
+  .chip.ext::after,
+  .chip.dl::after {
+    content: "";
+    width: 8px;
+    height: 8px;
+    background: currentColor;
+    opacity: .75;
+    -webkit-mask: var(--i-ext) center / contain no-repeat;
+            mask: var(--i-ext) center / contain no-repeat;
+  }
+  .chip.dl::after {
+    -webkit-mask-image: var(--i-down);
+            mask-image: var(--i-down);
+  }
+  .chip-primary {
+    color: var(--accent);
+    background: rgba(156, 58, 37, .06);
+    border-color: rgba(156, 58, 37, .38);
+  }
+  .chip-primary:hover {
+    color: #fbf8f2;
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 3px 10px rgba(156, 58, 37, .25);
+  }
+  .cite-btn .q {
+    font-family: var(--display);
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 0;
+    color: var(--accent);
+    transform: translateY(4px);
+    transition: color .18s;
+  }
+  .cite-btn[aria-expanded="true"] {
+    color: #fbf8f2;
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+  .cite-btn[aria-expanded="true"] .q { color: #e8916f; }
+
+  /* ---------- cite panel (built by the script below) ---------- */
+  .cite-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    margin-top: 0;
+    transition: grid-template-rows .42s cubic-bezier(.2,.7,.2,1), opacity .3s ease, margin-top .42s cubic-bezier(.2,.7,.2,1);
+  }
+  .cite-panel.open { grid-template-rows: 1fr; opacity: 1; margin-top: 14px; }
+  .cite-panel > .cite-clip { overflow: hidden; min-height: 0; }
+  .cite-card {
+    background: #221e1a;
+    color: #efe6d8;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 14px 30px rgba(29, 26, 23, .16);
+  }
+  .cite-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 8px 8px 10px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+  .cite-tabs { display: flex; gap: 2px; }
+  .cite-tab {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #a89f92;
+    background: none;
+    border: 0;
+    border-radius: 6px;
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: color .15s, background .15s;
+  }
+  .cite-tab:hover { color: #efe6d8; }
+  .cite-tab[aria-selected="true"] { color: #fbf8f2; background: rgba(255,255,255,.09); }
+  .cite-key {
+    flex: 1;
+    min-width: 0;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: #7d746a;
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .cite-copy {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #fbf8f2;
+    background: var(--accent);
+    border: 0;
+    border-radius: 999px;
+    padding: 7px 13px;
+    cursor: pointer;
+    transition: background .2s, transform .15s;
+  }
+  .cite-copy:hover { background: var(--accent-soft); }
+  .cite-copy:active { transform: scale(.96); }
+  .cite-copy.done { background: #2f6b3a; }
+  .cite-body {
+    margin: 0;
+    padding: 14px 16px 16px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 340px;
+    overflow: auto;
+    tab-size: 2;
+  }
+  .cite-body.is-text {
+    font-family: var(--serif);
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: #efe6d8;
+  }
+  .bk-type  { color: #e8916f; }
+  .bk-key   { color: #f2c879; }
+  .bk-field { color: #9fbfa8; }
+  .bk-brace { color: #7d746a; }
+
+  /* ---------- export-all row ---------- */
+  .bib-export {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: 40px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--line);
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--faint);
+  }
+  .bib-export span { letter-spacing: .14em; text-transform: uppercase; margin-right: 4px; }
+  .chip.done { color: #2f6b3a; border-color: rgba(47, 107, 58, .45); background: rgba(47, 107, 58, .08); }
+
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+
+  @media (max-width: 480px) {
+    .cite-key { display: none; }
+    .cite-bar { justify-content: space-between; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cite-panel { transition: none; }
+  }
+
   /* ---------- experience ---------- */
   .job { padding: 16px 0; border-top: 1px solid var(--line); }
   .job:first-of-type { border-top: none; }
@@ -446,35 +643,138 @@
   <!-- ================= PUBLICATIONS PANEL ================= -->
   <div class="panel" id="publications" role="tabpanel">
 
+    <!--
+      HOW EACH ENTRY WORKS
+      • Badge classes: b-accept (Accepted) · b-soon (Upcoming) · b-review (Under review) · b-pub (Published)
+      • .actions holds the link chips:
+          chip-primary = the official version (publisher / proceedings)
+          ext          = adds the little ↗ arrow
+      • A "Cite" button only needs the <template class="cite-src"> blocks inside the same entry.
+        Each template becomes a tab in the citation card (data-label = tab name,
+        data-fmt="bibtex" gets syntax colouring and is included in "Download .bib").
+        Paste plain text — indentation is stripped automatically.
+    -->
+
     <!-- ----- Selected Publications ----- -->
     <section class="reveal">
       <h2 class="label">Selected Publications · 2026</h2>
 
-      <!-- EDIT each entry. Badge classes: b-accept (Accepted) · b-soon (Upcoming) · b-review (Under review) · b-pub (Published) -->
+      <!-- ── AI Review survey ── -->
       <div class="entry">
-        <p class="ttl"><span class="badge b-soon">Upcoming</span>I/O for LLM Inference: A Survey of Storage and Memory Bottlenecks</p>
-        <p class="meta"><a class="inline" href="https://link.springer.com/journal/10462" target="_blank" rel="noopener">Artificial Intelligence Review (Springer Nature)</a> · accepted, to appear</p>
+        <p class="ttl"><span class="badge b-pub">Published</span><a class="inline" href="https://doi.org/10.1007/s10462-026-11651-1" target="_blank" rel="noopener">I/O for LLM Inference: A Survey of Storage and Memory Bottlenecks</a></p>
+        <p class="authors">Rajarshi Chowdhury</p>
+        <p class="meta"><a class="inline" href="https://link.springer.com/journal/10462" target="_blank" rel="noopener">Artificial Intelligence Review (Springer Nature)</a> · Vol. 59, Article 231 · 2026 · Open access</p>
+        <div class="actions">
+          <a class="chip chip-primary ext" href="https://doi.org/10.1007/s10462-026-11651-1" target="_blank" rel="noopener">Springer</a>
+          <a class="chip ext" href="https://link.springer.com/content/pdf/10.1007/s10462-026-11651-1.pdf" target="_blank" rel="noopener">PDF</a>
+          <a class="chip ext" href="https://doi.org/10.5281/zenodo.18780115" target="_blank" rel="noopener">Code</a>
+          <button class="chip cite-btn" type="button" aria-expanded="false"><span class="q" aria-hidden="true">&ldquo;</span>Cite</button>
+        </div>
+        <template class="cite-src" data-fmt="bibtex" data-label="BibTeX">
+@article{chowdhury2026ioforllm,
+  author    = {Chowdhury, Rajarshi},
+  title     = {{I/O} for {LLM} Inference: A Survey of Storage and Memory Bottlenecks},
+  journal   = {Artificial Intelligence Review},
+  volume    = {59},
+  number    = {11},
+  pages     = {231},
+  year      = {2026},
+  publisher = {Springer},
+  doi       = {10.1007/s10462-026-11651-1}
+}
+        </template>
+        <template class="cite-src" data-fmt="text" data-label="IEEE">
+R. Chowdhury, "I/O for LLM Inference: A Survey of Storage and Memory Bottlenecks," Artificial Intelligence Review, vol. 59, no. 11, Art. no. 231, 2026, doi: 10.1007/s10462-026-11651-1.
+        </template>
       </div>
 
+      <!-- ── DSN 2026 ── -->
+      <!-- TODO: once you have the article's own IEEE Xplore page, put it on the "IEEE DSN-S" chip
+           and add its DOI (10.1109/DSN-S70715.2026.xxxxx) to the BibTeX below. -->
       <div class="entry">
-        <p class="ttl"><span class="badge b-accept">Accepted</span><a class="inline" href="https://arxiv.org/abs/2605.28991" target="_blank" rel="noopener">A Secure, Manifest-Based Framework for Delegated Privilege Promotion</a></p>
+        <p class="ttl"><span class="badge b-pub">Published</span><a class="inline" href="https://arxiv.org/abs/2605.28991" target="_blank" rel="noopener">A Secure, Manifest-Based Framework for Delegated Privilege Promotion</a></p>
         <p class="authors">Rajarshi Chowdhury, Akshay Shah</p>
-        <p class="meta"><a class="inline" href="https://dsn2026.github.io/cpaccepted.html" target="_blank" rel="noopener">IEEE/IFIP DSN 2026</a></p>
+        <p class="meta"><a class="inline" href="https://dsn2026.github.io/cpaccepted.html" target="_blank" rel="noopener">IEEE/IFIP DSN 2026</a> · Supplemental Volume (DSN-S), pp. 8–14 · Charlotte, NC</p>
         <p class="note">A security architecture for automated patching in air-gapped environments.</p>
+        <div class="actions">
+          <a class="chip chip-primary ext" href="https://ieeexplore.ieee.org/xpl/conhome/11664649/proceeding" target="_blank" rel="noopener">IEEE DSN-S</a>
+          <a class="chip ext" href="https://arxiv.org/abs/2605.28991" target="_blank" rel="noopener">arXiv</a>
+          <button class="chip cite-btn" type="button" aria-expanded="false"><span class="q" aria-hidden="true">&ldquo;</span>Cite</button>
+        </div>
+        <template class="cite-src" data-fmt="bibtex" data-label="BibTeX">
+@inproceedings{chowdhury2026manifest,
+  author        = {Chowdhury, Rajarshi and Shah, Akshay},
+  title         = {A Secure, Manifest-Based Framework for Delegated Privilege Promotion},
+  booktitle     = {2026 56th Annual IEEE/IFIP International Conference on Dependable Systems and Networks -- Supplemental Volume (DSN-S)},
+  pages         = {8--14},
+  year          = {2026},
+  month         = jun,
+  address       = {Charlotte, NC, USA},
+  publisher     = {IEEE},
+  eprint        = {2605.28991},
+  archivePrefix = {arXiv}
+}
+        </template>
+        <template class="cite-src" data-fmt="text" data-label="IEEE">
+R. Chowdhury and A. Shah, "A Secure, Manifest-Based Framework for Delegated Privilege Promotion," in Proc. 56th Annu. IEEE/IFIP Int. Conf. Dependable Systems and Networks – Supplemental Volume (DSN-S), Charlotte, NC, USA, 2026, pp. 8–14.
+        </template>
       </div>
 
+      <!-- ── VLDB 2026 / PVLDB ── -->
       <div class="entry">
-        <p class="ttl"><span class="badge b-accept">Accepted</span><a class="inline" href="https://arxiv.org/abs/2605.29006" target="_blank" rel="noopener">IORM: Hierarchical I/O Governance for Thousands of Consolidated Databases on Oracle Exadata</a></p>
+        <p class="ttl"><span class="badge b-pub">Published</span><a class="inline" href="https://doi.org/10.14778/3827998.3828044" target="_blank" rel="noopener">IORM: Hierarchical I/O Governance for Thousands of Consolidated Databases on Oracle Exadata</a></p>
         <p class="authors">Rajarshi Chowdhury, Akshay Shah, Zakaria Alrmaih, Chenhao Guo, Anubhav Singh, Sue Lee</p>
-        <p class="meta"><a class="inline" href="https://vldb.org/2026/" target="_blank" rel="noopener">VLDB 2026</a></p>
+        <p class="meta"><a class="inline" href="https://vldb.org/2026/" target="_blank" rel="noopener">VLDB 2026</a> · PVLDB 19(12), pp. 4440–4452 · Industrial track</p>
         <p class="note">Control-plane / data-plane architecture for enforcing strict SLAs in multi-tenant environments.</p>
+        <div class="actions">
+          <a class="chip chip-primary ext" href="https://doi.org/10.14778/3827998.3828044" target="_blank" rel="noopener">PVLDB</a>
+          <a class="chip ext" href="https://www.vldb.org/pvldb/vol19/p4440-chowdhury.pdf" target="_blank" rel="noopener">PDF</a>
+          <a class="chip ext" href="https://arxiv.org/abs/2605.29006" target="_blank" rel="noopener">arXiv</a>
+          <button class="chip cite-btn" type="button" aria-expanded="false"><span class="q" aria-hidden="true">&ldquo;</span>Cite</button>
+        </div>
+        <template class="cite-src" data-fmt="bibtex" data-label="BibTeX">
+@article{chowdhury2026iorm,
+  author  = {Chowdhury, Rajarshi and Shah, Akshay and Alrmaih, Zakaria and Guo, Chenhao and Singh, Anubhav and Lee, Sue},
+  title   = {{IORM}: Hierarchical {I/O} Governance for Thousands of Consolidated Databases on {Oracle Exadata}},
+  journal = {Proceedings of the VLDB Endowment},
+  volume  = {19},
+  number  = {12},
+  pages   = {4440--4452},
+  year    = {2026},
+  doi     = {10.14778/3827998.3828044}
+}
+        </template>
+        <template class="cite-src" data-fmt="text" data-label="IEEE">
+R. Chowdhury, A. Shah, Z. Alrmaih, C. Guo, A. Singh, and S. Lee, "IORM: Hierarchical I/O Governance for Thousands of Consolidated Databases on Oracle Exadata," Proc. VLDB Endow., vol. 19, no. 12, pp. 4440–4452, 2026, doi: 10.14778/3827998.3828044.
+        </template>
       </div>
 
+      <!-- ── IC2E 2026 ── -->
+      <!-- TODO after the conference (Oct 13–16): add an "IEEE IC2E" chip-primary pointing at the
+           IEEE Xplore page, switch the badge to b-pub "Published", and add pages + DOI below. -->
       <div class="entry">
-        <p class="ttl"><span class="badge b-accept">Accepted</span>Hardware-Transparent I/O Governance in Disaggregated Heterogeneous Storage</p>
+        <p class="ttl"><span class="badge b-accept">Accepted</span><a class="inline" href="https://arxiv.org/abs/2607.16578" target="_blank" rel="noopener">Hardware-Transparent I/O Governance in Disaggregated Heterogeneous Storage</a></p>
         <p class="authors">Rajarshi Chowdhury, Akshay Shah, Sue K. Lee</p>
-        <p class="meta"><a class="inline" href="https://conferences.computer.org/IC2E/2026/" target="_blank" rel="noopener">IEEE IC2E 2026</a></p>
+        <p class="meta"><a class="inline" href="https://conferences.computer.org/IC2E/2026/" target="_blank" rel="noopener">IEEE IC2E 2026</a> · to appear, October 2026</p>
         <p class="note">The I/O Resource Manager used in Oracle Exadata / Exascale to resolve "noisy-neighbor" conflicts at hyperscale.</p>
+        <div class="actions">
+          <a class="chip ext" href="https://arxiv.org/abs/2607.16578" target="_blank" rel="noopener">arXiv</a>
+          <button class="chip cite-btn" type="button" aria-expanded="false"><span class="q" aria-hidden="true">&ldquo;</span>Cite</button>
+        </div>
+        <template class="cite-src" data-fmt="bibtex" data-label="BibTeX">
+@inproceedings{chowdhury2026hwtransparent,
+  author        = {Chowdhury, Rajarshi and Shah, Akshay and Lee, Sue K.},
+  title         = {Hardware-Transparent {I/O} Governance in Disaggregated Heterogeneous Storage},
+  booktitle     = {Proceedings of the 14th IEEE International Conference on Cloud Engineering (IC2E)},
+  year          = {2026},
+  note          = {To appear},
+  eprint        = {2607.16578},
+  archivePrefix = {arXiv}
+}
+        </template>
+        <template class="cite-src" data-fmt="text" data-label="IEEE">
+R. Chowdhury, A. Shah, and S. K. Lee, "Hardware-Transparent I/O Governance in Disaggregated Heterogeneous Storage," in Proc. 14th IEEE Int. Conf. Cloud Engineering (IC2E), 2026, to appear. arXiv:2607.16578.
+        </template>
       </div>
     </section>
 
@@ -484,13 +784,41 @@
 
       <div class="entry">
         <p class="ttl"><span class="badge b-pub">Paper</span><a class="inline" href="https://arxiv.org/abs/2606.15137" target="_blank" rel="noopener">uringscope: Portable, Low-Overhead Observability for io_uring</a></p>
+        <p class="meta">arXiv preprint · cs.OS · June 2026</p>
+        <div class="actions">
+          <a class="chip chip-primary ext" href="https://arxiv.org/abs/2606.15137" target="_blank" rel="noopener">arXiv</a>
+          <a class="chip ext" href="https://github.com/rch0wdhury/uringscope" target="_blank" rel="noopener">Code</a>
+          <button class="chip cite-btn" type="button" aria-expanded="false"><span class="q" aria-hidden="true">&ldquo;</span>Cite</button>
+        </div>
+        <template class="cite-src" data-fmt="bibtex" data-label="BibTeX">
+@misc{chowdhury2026uringscope,
+  author        = {Chowdhury, Rajarshi},
+  title         = {uringscope: Portable, Low-Overhead Observability for io\_uring},
+  year          = {2026},
+  eprint        = {2606.15137},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.OS},
+  doi           = {10.48550/arXiv.2606.15137}
+}
+        </template>
+        <template class="cite-src" data-fmt="text" data-label="IEEE">
+R. Chowdhury, "uringscope: Portable, Low-Overhead Observability for io_uring," arXiv:2606.15137 [cs.OS], 2026.
+        </template>
       </div>
 
+      <!-- No online copy or author list found for this one — add chips / a cite template here if you have them. -->
       <div class="entry">
         <p class="ttl"><span class="badge b-pub">Paper</span>Design and Implementation of Parallel Pattern Matching Algorithms for Multi-Core Systems</p>
         <p class="meta">International Journal of Advanced Computing (IJAC), Vol. 2, Issue 4 · October 2010</p>
       </div>
     </section>
+
+    <!-- ----- Export all citations ----- -->
+    <div class="bib-export reveal">
+      <span>All citations</span>
+      <button class="chip" type="button" id="bib-copy-all">Copy all BibTeX</button>
+      <button class="chip chip-primary dl" type="button" id="bib-download">Download .bib</button>
+    </div>
 
   </div><!-- /publications panel -->
 
@@ -585,6 +913,7 @@
       <!-- EDIT: keep this current as roles are confirmed -->
       <ul class="svc">
         <li><span class="when">2027</span> &nbsp;Industry Track Co-Chair — DSN 2027</li>
+        <li><span class="when">2027</span> &nbsp;Senior Reviewer — SIGCSE TS 2027</li>
         <li><span class="when">2026</span> &nbsp;Industry Session Chair — DSN 2026</li>
         <li><span class="when">2026</span> &nbsp;Reviewer — SIGCSE Virtual</li>
         <li><span class="when">2026</span> &nbsp;Reviewer — ICANN</li>
@@ -600,6 +929,9 @@
     <a href="https://www.linkedin.com/in/rajarshichowdhury/" target="_blank" rel="noopener">LinkedIn</a> ·
     <a href="https://orcid.org/0009-0007-7032-2450" target="_blank" rel="noopener">ORCID</a>
   </footer>
+
+  <!-- announces "Copied" to screen readers -->
+  <p class="sr-only" id="cite-status" aria-live="polite"></p>
 
 </div>
 
@@ -640,6 +972,184 @@
     });
   })();
 
+  /* ================= Citations ================= */
+  (function () {
+    var status = document.getElementById('cite-status');
+
+    // Strip the leading/trailing blank lines and common indentation from a template.
+    function dedent(s) {
+      var lines = s.replace(/^\s*\n/, '').replace(/\s+$/, '').split('\n');
+      var min = Infinity;
+      lines.forEach(function (l) {
+        if (l.trim()) min = Math.min(min, l.match(/^[ \t]*/)[0].length);
+      });
+      if (min === Infinity) min = 0;
+      return lines.map(function (l) { return l.slice(min); }).join('\n');
+    }
+
+    function sourceText(tpl) { return dedent(tpl.content.textContent); }
+
+    function esc(s) {
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    // Light BibTeX colouring: entry type, key, field names, outer braces.
+    function highlightBib(src) {
+      return esc(src)
+        .replace(/^(@\w+)\{([^,\n]+),/m,
+                 '<span class="bk-type">$1</span><span class="bk-brace">{</span><span class="bk-key">$2</span>,')
+        .replace(/^([ \t]+)([A-Za-z]+)([ \t]*=)/gm, '$1<span class="bk-field">$2</span>$3')
+        .replace(/\n\}$/, '\n<span class="bk-brace">}</span>');
+    }
+
+    function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        return navigator.clipboard.writeText(text);
+      }
+      return new Promise(function (resolve, reject) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy') ? resolve() : reject(); }
+        catch (e) { reject(e); }
+        finally { document.body.removeChild(ta); }
+      });
+    }
+
+    function flash(btn, okLabel, idleLabel) {
+      clearTimeout(btn._t);
+      btn.textContent = okLabel;
+      btn.classList.add('done');
+      status.textContent = okLabel;
+      btn._t = setTimeout(function () {
+        btn.textContent = idleLabel;
+        btn.classList.remove('done');
+      }, 1600);
+    }
+
+    var uid = 0;
+
+    function buildPanel(entry, btn) {
+      var formats = Array.prototype.map.call(
+        entry.querySelectorAll('template.cite-src'),
+        function (t) {
+          return { label: t.dataset.label || t.dataset.fmt, fmt: t.dataset.fmt, text: sourceText(t) };
+        });
+      var bib = formats.filter(function (f) { return f.fmt === 'bibtex'; })[0];
+      var key = bib ? ((bib.text.match(/@\w+\{([^,\n]+),/) || [])[1] || '') : '';
+
+      var id = 'cite-' + (++uid);
+      var panel = document.createElement('div');
+      panel.className = 'cite-panel';
+      panel.id = id;
+      panel.setAttribute('role', 'region');
+      panel.setAttribute('aria-label', 'Citation');
+      panel.innerHTML =
+        '<div class="cite-clip"><div class="cite-card">' +
+          '<div class="cite-bar">' +
+            '<div class="cite-tabs" role="tablist"></div>' +
+            '<span class="cite-key"></span>' +
+            '<button class="cite-copy" type="button">Copy</button>' +
+          '</div>' +
+          '<pre class="cite-body" tabindex="0"></pre>' +
+        '</div></div>';
+
+      var tabs = panel.querySelector('.cite-tabs');
+      var body = panel.querySelector('.cite-body');
+      var copy = panel.querySelector('.cite-copy');
+      panel.querySelector('.cite-key').textContent = key ? key + '.bib' : '';
+      var current = formats[0];
+
+      function show(f) {
+        current = f;
+        Array.prototype.forEach.call(tabs.children, function (b) {
+          b.setAttribute('aria-selected', b._fmt === f ? 'true' : 'false');
+        });
+        if (f.fmt === 'bibtex') {
+          body.classList.remove('is-text');
+          body.innerHTML = highlightBib(f.text);
+        } else {
+          body.classList.add('is-text');
+          body.textContent = f.text;
+        }
+      }
+
+      formats.forEach(function (f) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'cite-tab';
+        b.setAttribute('role', 'tab');
+        b.textContent = f.label;
+        b._fmt = f;
+        b.addEventListener('click', function () { show(f); });
+        tabs.appendChild(b);
+      });
+
+      copy.addEventListener('click', function () {
+        copyText(current.text).then(
+          function () { flash(copy, 'Copied ✓', 'Copy'); },
+          function () { flash(copy, 'Press ⌘/Ctrl+C', 'Copy'); selectBody(); });
+      });
+
+      function selectBody() {
+        var r = document.createRange();
+        r.selectNodeContents(body);
+        var s = window.getSelection();
+        s.removeAllRanges();
+        s.addRange(r);
+      }
+
+      panel.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { toggle(entry, btn, false); btn.focus(); }
+      });
+
+      show(current);
+      btn.setAttribute('aria-controls', id);
+      btn.parentNode.insertAdjacentElement('afterend', panel);
+      void panel.offsetHeight;            // let the closed state paint so the opening animates
+      return panel;
+    }
+
+    function toggle(entry, btn, force) {
+      var panel = btn._panel || (btn._panel = buildPanel(entry, btn));
+      var open = typeof force === 'boolean' ? force : !panel.classList.contains('open');
+      panel.classList.toggle('open', open);
+      panel.inert = !open;
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+
+    document.querySelectorAll('.cite-btn').forEach(function (btn) {
+      var entry = btn.closest('.entry');
+      btn.addEventListener('click', function () { toggle(entry, btn); });
+    });
+
+    /* ---- export everything ---- */
+    function allBib() {
+      return Array.prototype.map.call(
+        document.querySelectorAll('template.cite-src[data-fmt="bibtex"]'), sourceText
+      ).join('\n\n') + '\n';
+    }
+
+    var copyAll = document.getElementById('bib-copy-all');
+    if (copyAll) copyAll.addEventListener('click', function () {
+      copyText(allBib()).then(function () { flash(copyAll, 'Copied ✓', 'Copy all BibTeX'); });
+    });
+
+    var dl = document.getElementById('bib-download');
+    if (dl) dl.addEventListener('click', function () {
+      var blob = new Blob([allBib()], { type: 'application/x-bibtex;charset=utf-8' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'chowdhury-publications.bib';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 0);
+    });
+  })();
 </script>
 </body>
 </html>
